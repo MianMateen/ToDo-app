@@ -1,10 +1,22 @@
-class ToDo:
+class ToDo:            # fix and test everything please i cannot do it right now because i am tired.
     def __init__(self):
         self.lists = []
     
     def todo_add(self):
         self.add = input('> ')
-        self.lists.append(self.add)
+        with open('text.txt', 'r') as f:
+            lines = f.readlines()
+            if self.add in lines:
+                print(f"You have already have a task named {self.add}")
+                add_another = input('Are you sure you want to add another one? ').lower()
+                if add_another == 'yes' or add_another == 'y':
+                    self.lists.append(self.add + '\n')
+                    print(f"Another {self.add} Added!\n")
+                elif add_another == 'no' or add_another == 'n':
+                    print(f'{self.add} not added!\n')
+            elif self.add not in lines:
+                self.lists.append(self.add + '\n')
+                print(f'{self.add} Added!!\n')
 
 
     def show_todo_list(self):
