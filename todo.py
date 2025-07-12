@@ -9,7 +9,7 @@ class ToDo:            # fix and test everything please i cannot do it right now
             if self.counter == 0:
                 self.lists = [line.strip() for line in self.lists]
             elif self.counter >= 1:
-                self.lists = [line + '/n' for line in self.lists]
+                self.lists = [line + '\n' for line in self.lists]
         except FileNotFoundError:
             pass
     
@@ -21,7 +21,7 @@ class ToDo:            # fix and test everything please i cannot do it right now
                 if self.counter == 0:
                     self.lists = [line.strip() for line in self.lists]
                 elif self.counter >= 1:
-                    self.lists = [line + '/n' for line in self.lists]
+                    self.lists = [line + '\n' for line in self.lists]
 
                 if addition in self.lists:
                     print(f"\nYou have already have a task named {addition}.")
@@ -57,6 +57,25 @@ class ToDo:            # fix and test everything please i cannot do it right now
             print('No file task found, please add a task!')
 
 
+    def remove(self, number):
+        try:
+            with open('text.txt', 'r') as f:
+                tasks = [line.strip() for line in f if line.strip()]
+                
+                for i, line in enumerate(tasks, start=1):
+                    index_to_delete = None
+                    if number in tasks:
+                        if i == number:
+                            index_to_delete = i - 1
+                    else:
+                        print('Not valid number!')
+
+                if index_to_delete != None:
+                    del tasks[index_to_delete]
+
+        except FileNotFoundError:
+            print('No file task found, please add a task!')
+
     def save(self):
         with open('text.txt', 'w') as f:
             f.writelines(self.lists)
@@ -73,6 +92,10 @@ while True:
         todo.show_todo_list()
     elif command == 'help':
         print("\nThe commands are Add, Remove, or Show todo list(or just type show)\n")
+    elif command == 'remove':
+        todo.show_todo_list()
+        delete = input('\nWhat line do you want to remove: ')
+        todo.remove(delete)
     elif command == 'quit':
         break
     else:
