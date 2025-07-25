@@ -6,10 +6,7 @@ class ToDo:            # fix and test everything please i cannot do it right now
         try:
             with open('text.txt', 'r') as f:
                 self.lists = f.readlines()
-            if self.counter == 0:
                 self.lists = [line.strip() for line in self.lists]
-            elif self.counter >= 1:
-                self.lists = [line + '\n' for line in self.lists]
         except FileNotFoundError:
             pass
     
@@ -20,6 +17,7 @@ class ToDo:            # fix and test everything please i cannot do it right now
             with open('text.txt', 'r') as f:
                 if self.counter == 0:
                     self.lists = [line.strip() for line in self.lists]
+                    self.counter += 1
                 elif self.counter >= 1:
                     self.lists = [line + '\n' for line in self.lists]
 
@@ -27,7 +25,9 @@ class ToDo:            # fix and test everything please i cannot do it right now
                     print(f"\nYou have already have a task named {addition}.")
                     add_another = input('Add it anyway? (yes/no) ').lower()
                     if add_another == 'yes' or add_another == 'y':
-                        self.lists.append(addition + '\n')
+                        self.lists.append(addition)
+                        self.lists = [line.rstrip('\n') for line in self.lists]
+                        self.counter = 0
                         print(f"Another {addition} Added!")
                         self.counter += 1
                     else:
@@ -55,48 +55,30 @@ class ToDo:            # fix and test everything please i cannot do it right now
                     print(f'{i}. {line}')
         except FileNotFoundError:
             print('No file task found, please add a task!')
-
-
+            
     def remove(self, number):
         try:
             with open('text.txt', 'r') as f:
                 tasks = [line.strip() for line in f if line.strip()]
-                
+                index_to_delete = None
+
                 for i, line in enumerate(tasks, start=1):
-                    index_to_delete = None
-                    if number in tasks:
-                        if i == number:
-                            index_to_delete = i - 1
+                    if i == number:
+                        index_to_delete = i - 1
+                        if self.lists == []:
+                            print(f'Line {i}. {line} has been succesfully removed!')
                     else:
-                        print('Not valid number!')
+                        print('Not valid number in the list!')
 
                 if index_to_delete != None:
                     del tasks[index_to_delete]
+                    
 
         except FileNotFoundError:
             print('No file task found, please add a task!')
+        except ValueError:
+            print('Please print a number!')
 
     def save(self):
         with open('text.txt', 'w') as f:
             f.writelines(self.lists)
-
-
-while True:
-    command = input('\nWhat do you want to do? ').lower()
-    todo = ToDo()
-
-    if command == 'add':
-        todo.todo_add()
-        todo.save()
-    elif command == 'show':
-        todo.show_todo_list()
-    elif command == 'help':
-        print("\nThe commands are Add, Remove, or Show todo list(or just type show)\n")
-    elif command == 'remove':
-        todo.show_todo_list()
-        delete = input('\nWhat line do you want to remove: ')
-        todo.remove(delete)
-    elif command == 'quit':
-        break
-    else:
-        print('\nNot valid command (type help for commands)\n')
