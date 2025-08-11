@@ -1,4 +1,12 @@
 from todo_class import ToDo
+"""
+I added a thing called line_counter it defintantley need refining please go over this and fix anything 
+in the add and remove functions (or any function for that matter)
+
+ps: i currently don't have time to do this right now it is 23:33 hours on aug 6
+
+i worked on this today it is aug 11 time: 00:16 year: 2025
+"""
 
 if __name__ == '__main__':
     while True:
