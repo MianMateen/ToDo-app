@@ -1,9 +1,13 @@
+
 class ToDo:            # fix and test everything please i cannot do it right now because i am tired.
     def __init__(self):
         self.lists = []
+        self.number_list = list(range(1, 51))
         self.add = None
-        self.line_counter = 0
+        self.line_counter_file = 'line_counter.txt'
         try:
+            with open(self.line_counter_file, 'r') as f:
+                self.line_counter = int(f.read())
             with open('text.txt', 'r') as f:
                 self.lists = f.readlines()
         except FileNotFoundError:
@@ -11,26 +15,24 @@ class ToDo:            # fix and test everything please i cannot do it right now
     
     def todo_add(self):
         addition = input('> ').strip().capitalize()
-        self.add = addition
         self.line_counter += 1
-        for line in self.lists:
-            line.strip()
-            
-        if addition in self.lists:
+        
+        existing_lists = [task.split('. ', 1)[1].strip() for task in self.lists if '. ' in task]
+        if addition in existing_lists:
             print(f"\nYou have already have a task named {addition}.")
             add_another = input('Add it anyway? (yes/no) ').lower()
-            self.line_counter = str(self.line_counter)
             if add_another == 'yes' or add_another == 'y':
-                self.lists.append(self.line_counter + addition)
-                print(f"Another {addition} Added!")
+                self.lists.append(f"{self.line_counter}. {addition}\n")
+                print(f"Another '{addition}' Added!\n")
             else:
-                print(f'"{addition}" not added!\n')
+                 print(f'"{addition}" not added!\n')
+                 self.line_counter -= 1
         else:
-            self.line_counter = str(self.line_counter)
-            self.lists.append(self.line_counter + '.' + ' ' + addition + '\n')
-            print(f'{addition} Added!!\n')
-            save()
-
+            self.lists.append(f'{self.line_counter}. {addition}\n')
+            print(f'"{addition}" Added!!\n')
+            
+        with open(self.line_counter_file, 'w') as f:
+            f.write(str(self.line_counter))
 
 
     def show_todo_list(self):
@@ -46,19 +48,15 @@ class ToDo:            # fix and test everything please i cannot do it right now
     def remove(self, number):
         try:
 
-            tasks = [line.strip() for line in f if line.strip()]
-            index_to_delete = None
+            ListOfNumbers = [int(task.split('. ', 1)[0].strip()) for task in self.lists if '. ' in task]
+            index_to_delete = number
 
-            for i, line in enumerate(tasks, start=1):
-                if i == number:
-                    index_to_delete = i - 1
-                    if self.lists == []:
-                        print(f'Line {i}. {line} has been succesfully removed!')
-                else:
-                    print('Not valid number in the list!')
-
-            if index_to_delete != None:
-                del tasks[index_to_delete]
+            if index_to_delete in ListOfNumbers:
+                index_to_delete -= 1
+                del ListOfNumbers[index_to_delete]
+                print(f'Deleted "{ListOfNumbers}"')
+            else:
+                print(f"Didn't delete {ListOfNumbers}")
                     
         except ValueError:
             print('Please print a number!')
