@@ -1,5 +1,4 @@
-
-class ToDo:            # fix and test everything please i cannot do it right now because i am tired.
+class ToDo:            
     def __init__(self):
         self.lists = []
         self.number_list = list(range(1, 51))
@@ -24,15 +23,17 @@ class ToDo:            # fix and test everything please i cannot do it right now
             if add_another == 'yes' or add_another == 'y':
                 self.lists.append(f"{self.line_counter}. {addition}\n")
                 print(f"Another '{addition}' Added!\n")
+                self.save()
+                return 0
             else:
                  print(f'"{addition}" not added!\n')
                  self.line_counter -= 1
+                 return 1
         else:
             self.lists.append(f'{self.line_counter}. {addition}\n')
             print(f'"{addition}" Added!!\n')
-            
-        with open(self.line_counter_file, 'w') as f:
-            f.write(str(self.line_counter))
+            self.save()
+            return 0
 
 
     def show_todo_list(self):
@@ -48,19 +49,27 @@ class ToDo:            # fix and test everything please i cannot do it right now
     def remove(self, number):
         try:
 
-            ListOfNumbers = [int(task.split('. ', 1)[0].strip()) for task in self.lists if '. ' in task]
-            index_to_delete = number
-
-            if index_to_delete in ListOfNumbers:
-                index_to_delete -= 1
-                del ListOfNumbers[index_to_delete]
-                print(f'Deleted "{ListOfNumbers}"')
-            else:
-                print(f"Didn't delete {ListOfNumbers}")
+            for i, task in enumerate(self.lists):
+                if task.startswith(f'{number}. '):
+                    removed_task = self.lists.pop(i)
+                    self.line_counter -= 1
+                    print(f'Removed: {removed_task}')
+                    self.number_assortment()
+                    self.save()
+                    return
+                
+            print(f"Task {number} not found")
                     
         except ValueError:
             print('Please print a number!')
+            
+    def number_assortment(self):
+        self.lists = [f'{i+1}. {tasks.split('. ', 1)[1]}' for i, tasks in enumerate(self.lists)]
+        self.line_counter = len(self.lists)
 
     def save(self):
         with open('text.txt', 'w') as f:
             f.writelines(self.lists)
+            
+        with open(self.line_counter_file, 'w') as f:
+            f.write(str(self.line_counter))
