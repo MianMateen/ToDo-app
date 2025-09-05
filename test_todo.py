@@ -1,21 +1,15 @@
 from todo_class import ToDo
-"""
-I added a thing called line_counter it defintantley need refining please go over this and fix anything 
-in the add and remove functions (or any function for that matter)
-
-ps: i currently don't have time to do this right now it is 23:33 hours on aug 6
-
-i worked on this today it is aug 11 time: 00:16 year: 2025
-My faut i have been working o0n this but i forgot to log my hours so i will do that today. Time: 22:08 9/4/2025
-"""
+from test import GUi
 
 if __name__ == '__main__':
     while True:
         todo = ToDo()
+        gui = GUi()
         command = input('\nWhat do you want to do? ').lower()
 
         if command == 'add':
             todo.todo_add()
+            gui.main()
             todo.save()
         elif command == 'show':
             todo.show_todo_list()

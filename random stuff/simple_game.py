@@ -1,4 +1,5 @@
 import json
+import time
 # class Unit: # Note that the smallest combat functioning unit is a company (100 troops): (Swordsmen/Spearmen: 60), (Archers: 30), (Elites: 10).
 #     def __init__(self, type_unit, mele, ranged, elites, kingdom):
 #         self.type = type_unit.lower()
@@ -78,13 +79,15 @@ class Soldier:
         
         if hasattr(self, "attacker"):
             self.attacker.matches['won'] += 1
+            self.attacker.xp += 50
+            print(self.attacker.xp)
             
     def __str__(self):
         return f"\n{self.name} ({self.race} {self.type}) - Health: {self.hp}, Attack: {self.atk}\n"       
             
     def turn(self, enemy):
         while self.alive and enemy.alive:
-            
+            time.sleep(1.3)
             if not self._turn:
                 enemy.attack(self)
                 print(self)
@@ -105,8 +108,23 @@ class Soldier:
             json.load(f)
             print(self.name, self.matches)
 
-human = Soldier('swordmen', 'Human', 'Baldin')
-human2 = Soldier('mage', 'human', 'Storkil')
+print('''Valid professions are: 
+      
+        'swordmen': {'hp': 80, 'atk': 15},
+        'archer': {'hp': 50, 'atk': 20 },
+        'mage': {'hp': 40, 'atk': 25},
+        'peasant levy': {'hp': 30, 'atk': 5}    ''')
+
+
+firstchoice = input('profession: ')
+second = input('Race: ')
+third = input('Name: \n')
+human = Soldier(f'{firstchoice}', f'{second}', f'{third}')
+
+firstchoice2 = input('profession: ')
+second2 = input('Race: ')
+third2 = input('Name: ')
+human2 = Soldier(f'{firstchoice2}', f'{human}', f'{third2}')
 
 human.turn(human2)
 

@@ -4,6 +4,7 @@ class ToDo:
         self.number_list = list(range(1, 51))
         self.add = None
         self.line_counter_file = 'line_counter.txt'
+        self.add_called = False
         try:
             with open(self.line_counter_file, 'r') as f:
                 self.line_counter = int(f.read())
@@ -13,6 +14,7 @@ class ToDo:
             pass
     
     def todo_add(self):
+        self.add_called = True
         addition = input('> ').strip().capitalize()
         self.line_counter += 1
         
