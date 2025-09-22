@@ -1,5 +1,6 @@
 import json
 import time
+import random
 # class Unit: # Note that the smallest combat functioning unit is a company (100 troops): (Swordsmen/Spearmen: 60), (Archers: 30), (Elites: 10).
 #     def __init__(self, type_unit, mele, ranged, elites, kingdom):
 #         self.type = type_unit.lower()
@@ -57,24 +58,27 @@ class Soldier:
     def take_damage(self, amount):
         self.hp -= amount
         if self.hp <= 0:
+            self.hp = 0
             self.die()
             
     def attack(self, enemy):
         if self.alive and enemy.alive:
-            damage = self.atk
+            damage = random.randint(int(self.atk * .5), int(self.atk * 2.2))
             enemy.hp -= damage
+            enemy.take_damage(damage)
             enemy.attacker = self
-            if enemy.hp <= 0:
-                enemy.die()
             print(f'\n{enemy.name} has suffered {damage} damage from {self.name}! \nHealth remaining: {enemy.hp}.')
+            if enemy.hp <= 0:
+                enemy.hp = 0
+                enemy.die()
             return damage
         else:
-            return 0        
+            return 0
             
     def die(self):
         self.alive = False
-        print(f'{self.name} has been defeated!')
         self.matches['lost'] += 1
+        print(f'{self.name} has been defeated!')
         #enemy.xp_gain()
         
         if hasattr(self, "attacker"):
@@ -108,23 +112,12 @@ class Soldier:
             json.load(f)
             print(self.name, self.matches)
 
-print('''Valid professions are: 
-      
-        'swordmen': {'hp': 80, 'atk': 15},
-        'archer': {'hp': 50, 'atk': 20 },
-        'mage': {'hp': 40, 'atk': 25},
-        'peasant levy': {'hp': 30, 'atk': 5}    ''')
+        
+        
 
 
-firstchoice = input('profession: ')
-second = input('Race: ')
-third = input('Name: \n')
-human = Soldier(f'{firstchoice}', f'{second}', f'{third}')
-
-firstchoice2 = input('profession: ')
-second2 = input('Race: ')
-third2 = input('Name: ')
-human2 = Soldier(f'{firstchoice2}', f'{human}', f'{third2}')
+human = Soldier("mage", "human", "hello")
+human2 = Soldier('mage', 'human', 'guy')
 
 human.turn(human2)
 

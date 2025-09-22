@@ -35,11 +35,12 @@ class ToDo:
             self.lists.append(f'{self.line_counter}. {addition}\n')
             print(f'"{addition}" Added!!\n')
             self.save()
+            self.add_called = False
             return 0
 
 
     def show_todo_list(self):
-    
+        
         if not self.lists:
             print('No tasks in the list!')
         
