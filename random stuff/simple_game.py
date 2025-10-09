@@ -49,9 +49,7 @@ class Soldier:
         }
         
         if self.type not in self.unit_clas:
-            print(f"{self.type} isn't avaliable to choose!")
-        else:
-            pass
+            raise KeyError(f"{self.type} isn't avaliable to choose!")
             
  
         
@@ -63,14 +61,10 @@ class Soldier:
             
     def attack(self, enemy):
         if self.alive and enemy.alive:
-            damage = random.randint(int(self.atk * .5), int(self.atk * 2.2))
-            enemy.hp -= damage
+            damage = random.randint(int(self.atk * .5), int(self.atk * 1.3))
             enemy.take_damage(damage)
             enemy.attacker = self
             print(f'\n{enemy.name} has suffered {damage} damage from {self.name}! \nHealth remaining: {enemy.hp}.')
-            if enemy.hp <= 0:
-                enemy.hp = 0
-                enemy.die()
             return damage
         else:
             return 0
@@ -84,33 +78,47 @@ class Soldier:
         if hasattr(self, "attacker"):
             self.attacker.matches['won'] += 1
             self.attacker.xp += 50
-            print(self.attacker.xp)
+            # print(self.attacker.xp)
             
     def __str__(self):
         return f"\n{self.name} ({self.race} {self.type}) - Health: {self.hp}, Attack: {self.atk}\n"       
+   
+    def match_stat(self, enemy):
+        status = {
+            self.name: self.matches,
+            enemy.name: enemy.matches
+        }
+    
+        with open('Battle_start.json', 'w') as f:
+            json.dump(status, f, indent=2)
             
+        print("==Battle Status==")
+        for name, match in status.items():
+            print(f'{name}: {match}')
+    
     def turn(self, enemy):
-        while self.alive and enemy.alive:
-            time.sleep(1.3)
-            if not self._turn:
+        self._turn = False
+        max_turn = 10
+        all_turn = 0
+        while self.alive and enemy.alive and all_turn < max_turn:
+            time.sleep(.8)
+            
+            if all_turn % 2 == 0:
                 enemy.attack(self)
                 print(self)
-                self._turn = True
             else:
                 self.attack(enemy)
                 print(enemy)
-                self._turn = False
                 
-            if not self.alive or not enemy.alive:
-                break
-        
-    def match_stat(self, ):
-        with open('match_save.json', 'w') as f:
-            json.dump(self.matches, f)
-        
-        with open('match_save.json', 'r') as f:
-            json.load(f)
-            print(self.name, self.matches)
+            all_turn +=1
+
+            if self.alive and enemy.alive:
+                if self.hp > enemy.hp:
+                        print(f'Winner: {self.name}')
+                elif self.hp == enemy.hp:
+                    print('Tie')
+                elif enemy.hp > self.hp:
+                    print(f'Winner: {enemy.name}')
 
         
         
@@ -121,5 +129,4 @@ human2 = Soldier('mage', 'human', 'guy')
 
 human.turn(human2)
 
-human.match_stat()
-human2.match_stat()
+human.match_stat(human2)
