@@ -1,9 +1,21 @@
 {
   "hello": {
+    "won": 1,
+    "lost": 3
+  },
+  "guy": {
+    "won": 4,
+    "lost": 1
+  },
+  "ret": {
     "won": 0,
     "lost": 1
   },
-  "guy": {
+  "Hero": {
+    "won": 0,
+    "lost": 1
+  },
+  "Enemy": {
     "won": 1,
     "lost": 0
   }
