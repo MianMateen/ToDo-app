@@ -13,10 +13,10 @@
   },
   "Hero": {
     "won": 0,
-    "lost": 1
+    "lost": 2
   },
   "Enemy": {
-    "won": 1,
+    "won": 2,
     "lost": 0
   }
 }
