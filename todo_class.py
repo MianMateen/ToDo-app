@@ -29,7 +29,7 @@ class ToDo:
                 return 0
             else:
                  print(f'"{addition}" not added!\n')
-                 self.line_counter -= 1
+                 self.line_counter_file -= 1
                  return 1
         else:
             self.lists.append(f'{self.line_counter}. {addition}\n')
