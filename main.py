@@ -21,6 +21,9 @@ if __name__ == '__main__':
                     break
                 try:
                     usr_delete = int(usr_input)
+                    if usr_delete <= 0:
+                        print('Can only put a non-negative integer (including 0)')
+                        break
                     todo.remove(usr_delete)
                     todo.save()
                 except ValueError:
