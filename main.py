@@ -15,11 +15,16 @@ if __name__ == '__main__':
         elif command == 'remove':
             todo.show_todo_list()
             while True:
-                delete = int(input('\nWhat line do you want to remove (q to quit): '))
+                usr_input = input('\nWhat line do you want to remove (q to quit): ')
                 if delete == 'q':
+                    print("Quitting program")
                     break
-                todo.remove(delete)
-                todo.save()
+                try:
+                    usr_delete = int(usr_input)
+                    todo.remove(usr_delete)
+                    todo.save()
+                except ValueError:
+                    print('Can only type in a integer')
         elif command == 'quit':
             break
         else:
