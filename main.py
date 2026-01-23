@@ -1,8 +1,8 @@
 from todo_class import ToDo
 
 if __name__ == '__main__':
+    todo = ToDo()
     while True:
-        todo = ToDo()
         command = input('\nWhat do you want to do? ').lower()
 
         if command == 'add':
