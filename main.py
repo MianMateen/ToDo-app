@@ -16,7 +16,7 @@ if __name__ == '__main__':
             todo.show_todo_list()
             while True:
                 usr_input = input('\nWhat line do you want to remove (q to quit): ')
-                if delete == 'q':
+                if usr_input == 'q':
                     print("Quitting program")
                     break
                 try:
