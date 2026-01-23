@@ -3,7 +3,6 @@ class ToDo:
         self.lists = []
         self.number_list = list(range(1, 51))
         self.add = None
-        self.line_counter_file = 'line_counter.txt'
         self.add_called = False
         try:
             with open(self.line_counter_file, 'r') as f:
@@ -29,7 +28,6 @@ class ToDo:
                 return 0
             else:
                  print(f'"{addition}" not added!\n')
-                 self.line_counter_file -= 1
                  return 1
         else:
             self.lists.append(f'{self.line_counter}. {addition}\n')
@@ -73,6 +71,3 @@ class ToDo:
     def save(self):
         with open('text.txt', 'w') as f:
             f.writelines(self.lists)
-            
-        with open(self.line_counter_file, 'w') as f:
-            f.write(str(self.line_counter))
